@@ -1,0 +1,12 @@
+apiVersion: v1 # Specifies the Kubernetes API version for Services
+kind: Service # The type of Kubernetes resource we are defining
+metadata:
+  name: flask-app-service # A unique name for your Service
+spec:
+  selector:
+    app: flask-web-app # This must match the 'app' label defined in your Deployment's Pod template
+  ports:
+    - protocol: TCP # The network protocol (TCP for HTTP traffic)
+      port: 80 # The port the Service will listen on internally within the cluster (e.g., other services would use flask-app-service:80)
+      targetPort: 8000 # The port your Flask app container is actually listening on (from your Dockerfile / Deployment's containerPort)
+  type: LoadBalancer # This type will make the service accessible externally via Minikube's special features

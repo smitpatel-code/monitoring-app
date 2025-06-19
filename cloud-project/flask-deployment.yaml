@@ -1,0 +1,24 @@
+apiVersion: apps/v1 # Specifies the Kubernetes API version for Deployments
+kind: Deployment # The type of Kubernetes resource we are defining
+metadata:
+  name: flask-app-deployment # A unique name for your Deployment
+  labels:
+    app: flask-web-app # Labels to identify this deployment and its pods
+spec:
+  replicas: 1 # Number of identical pods you want to run (start with 1 for now)
+  selector:
+    matchLabels:
+      app: flask-web-app # This links the Deployment to its Pods using the 'app' label
+  template: # This describes the Pods that the Deployment will create
+    metadata:
+      labels:
+        app: flask-web-app # Labels for the Pods themselves
+    spec:
+      containers: # Definition of the containers within each Pod
+      - name: flask-app-container # A name for your container
+        image: 559050217840.dkr.ecr.us-east-1.amazonaws.com/my-flask-app:latest # REPLACE WITH YOUR ACTUAL ECR IMAGE URI
+        ports:
+        - containerPort: 8000 # The port your Flask app (Gunicorn) listens on inside the container
+
+      imagePullSecrets: # This section is essential for pulling from private ECR
+      - name: ecr-pull-secret # The name of the Kubernetes secret you created earlier
